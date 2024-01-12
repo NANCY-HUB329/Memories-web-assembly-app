@@ -1,0 +1,43 @@
+﻿@page "/deletememory/{id}"
+@inject NavigationManager navigationManager
+@inject MemoryService memoryService
+
+<h5 class="card-title">@memory?.Name</h5>
+<p class="card-text">@memory?.Description</p>
+<p class="card-text">Date: @memory?.Date.ToShortDateString()</p>
+<p class="card-text">Location: @memory?.Location</p>
+
+<button class="btn btn-danger" @onclick="DeleteMemory">Delete Memory</button>
+
+@code {
+    private Memory? memory;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        
+        if (Guid.TryParse(Id, out Guid memoryId))
+        {
+            
+            memory = memoryService.GetMemoryById(memoryId);
+        }
+        else
+        {
+           
+            navigationManager.NavigateTo("/memories");
+        }
+    }
+
+    private void DeleteMemory()
+    {
+        if (memory != null)
+        {
+            memoryService.DeleteMemory(memory.Id);
+
+            
+            navigationManager.NavigateTo("/memories");
+        }
+    }
+}

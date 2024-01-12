@@ -1,0 +1,44 @@
+﻿@page "/memories"
+@inject NavigationManager navigationManager
+@inject MemoryService memoryService
+
+<h3>Memories List</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var memory in memoryService.GetMemories())
+        {
+            <tr>
+                <td>@memory.Name</td>
+                <td>@memory.Description</td>
+                <td>@memory.Date.ToShortDateString()</td>
+                <td>@memory.Location</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => EditMemory(memory)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteMemory(memory.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private void EditMemory(Memory memory)
+    {
+        navigationManager.NavigateTo($"/editmemory/{memory.Id}");
+    }
+
+    private void DeleteMemory(Guid id)
+    {
+        memoryService.DeleteMemory(id);
+    }
+}

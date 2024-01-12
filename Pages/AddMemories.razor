@@ -1,0 +1,40 @@
+﻿@using MemoriesAssessment.Shared;
+@page "/addmemory"
+
+@inject MemoryService memoryService
+@inject NavigationManager navigationManager
+
+<h3>Add Memory</h3>
+
+<EditForm Model="newMemory" OnValidSubmit="AddMemory">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" @bind="newMemory.Name">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" @bind="newMemory.Description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" class="form-control" id="date" @bind="newMemory.Date">
+    </div>
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" class="form-control" id="location" @bind="newMemory.Location">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Memory</button>
+</EditForm>
+
+@code {
+    private Memory newMemory = new Memory();
+
+    private void AddMemory()
+    {
+        memoryService.AddMemory(newMemory);
+        newMemory = new Memory();
+
+        navigationManager.NavigateTo("/memories");
+    }
+}
